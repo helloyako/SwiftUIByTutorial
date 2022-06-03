@@ -33,26 +33,27 @@
 import SwiftUI
 
 struct ScoreView: View {
-  let numberOfQuestions: Int
-  @Binding var numberOfAnswered: Int
+    @Binding var numberOfQuestions: Int
+    @Binding var numberOfAnswered: Int
   
-  var body: some View {
-    HStack {
-      Text("\(numberOfAnswered)/\(numberOfQuestions)")
-        .font(.caption)
-        .padding(4)
-      Spacer()
+    var body: some View {
+        HStack {
+          Text("\(numberOfAnswered)/\(numberOfQuestions)")
+            .font(.caption)
+            .padding(4)
+          Spacer()
+        }
     }
-  }
 }
 
 struct ScoreView_Previews: PreviewProvider {
-  @State static var numberOfAnswered: Int = 0
+    @State static var numberOfAnswered: Int = 0
+    @State static var numberOfQuestions: Int = 6
   
-  static var previews: some View {
-    ScoreView(
-      numberOfQuestions: 5,
-      numberOfAnswered: $numberOfAnswered
-    )
-  }
+    static var previews: some View {
+        ScoreView(
+            numberOfQuestions: $numberOfQuestions,
+            numberOfAnswered: $numberOfAnswered
+        )
+    }
 }

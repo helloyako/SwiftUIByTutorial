@@ -39,6 +39,7 @@ struct ChallengeView: View {
   @Binding var numberOfAnswered: Int
   @Environment(\.verticalSizeClass) var verticalSizeClass
   @Environment(\.questionsPerSession) var questionsPerSession
+    @AppStorage("numberOfQuestions") var numberOfQuestions = 6
   
   @ViewBuilder
   var body: some View {
@@ -57,7 +58,7 @@ struct ChallengeView: View {
           }
         }
         ScoreView(
-          numberOfQuestions: questionsPerSession,
+          numberOfQuestions: $numberOfQuestions,
           numberOfAnswered: $numberOfAnswered
         )
       }
@@ -71,7 +72,7 @@ struct ChallengeView: View {
             .frame(height: 300)
         }
         ScoreView(
-          numberOfQuestions: questionsPerSession,
+          numberOfQuestions: $numberOfQuestions,
           numberOfAnswered: $numberOfAnswered
         )
         if showAnswers {
