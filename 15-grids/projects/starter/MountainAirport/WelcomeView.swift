@@ -53,16 +53,16 @@ struct WelcomeView: View {
           ) { }
         }
         ScrollView {
-          VStack {
+          LazyVGrid(columns: [
+            GridItem(.fixed(160)),
+            GridItem(.fixed(160))
+          ], spacing: 5 ) {
             FlightStatusButton(flightInfo: flightInfo)
             SearchFlightsButton(flightInfo: flightInfo)
             AwardsButton()
-            LastViewedButton(
-              flightInfo: flightInfo,
-              appEnvironment: appEnvironment,
-              showNextFlight: $showNextFlight
-            )
-          }.font(.title)
+            LastViewedButton(flightInfo: flightInfo, appEnvironment: appEnvironment, showNextFlight: $showNextFlight)
+          }
+          .font(.title)
           .foregroundColor(.white)
           .padding()
         }
