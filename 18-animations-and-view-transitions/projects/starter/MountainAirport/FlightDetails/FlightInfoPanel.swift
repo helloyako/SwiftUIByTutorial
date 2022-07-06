@@ -32,6 +32,16 @@
 
 import SwiftUI
 
+extension AnyTransition {
+  static var buttonNameTransition: AnyTransition {
+    let insertion = AnyTransition.move(edge: .trailing)
+      .combined(with: .opacity)
+    let removal = AnyTransition.scale(scale: 0.0)
+      .combined(with: .opacity)
+    return .asymmetric(insertion: insertion, removal: removal)
+  }
+}
+
 struct FlightInfoPanel: View {
   var flight: FlightInformation
   @State private var showTerminal = false
@@ -60,25 +70,34 @@ struct FlightInfoPanel: View {
         }
         Text(flight.flightStatus) + Text(" (\(timeFormatter.string(from: flight.localTime)))")
         Button(action: {
-          showTerminal.toggle()
+            withAnimation {
+                showTerminal.toggle()
+              }
         }, label: {
           HStack(alignment: .center) {
-            Text(
-              showTerminal ?
-                "Hide Terminal Map" :
-                "Show Terminal Map"
-            )
+              Group {
+                if showTerminal {
+                  Text("Hide Terminal Map")
+                } else {
+                  Text("Show Terminal Map")
+                }
+              }
+              .transition(.slide)
             Spacer()
-            Image(systemName: "airplane.circle")
-              .resizable()
-              .frame(width: 30, height: 30)
-              .padding(10)
-              .rotationEffect(.degrees(showTerminal ? 90 : -90))
+              Image(systemName: "airplane.circle")
+                  .resizable()
+                  .frame(width: 30, height: 30)
+                  .padding(.trailing, 10)
+                  .rotationEffect(.degrees(showTerminal ? 90 : 270))
+                  .animation(.spring(response: 0.55,
+                                     dampingFraction: 0.45,
+                                     blendDuration: 0))
           }
         })
-        if showTerminal {
-          FlightTerminalMap(flight: flight)
-        }
+          if showTerminal {
+            FlightTerminalMap(flight: flight)
+              .transition(.buttonNameTransition)
+          }
         Spacer()
       }
     }
